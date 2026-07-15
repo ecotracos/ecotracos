@@ -3,7 +3,7 @@ import { Outlet, Navigate, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { supabase } from '../../config/supabase';
 import { LayoutDashboard, Package, Image as ImageIcon, Users, Settings, LogOut, Mail } from 'lucide-react';
-import logoUrl from '../../../assets/logo.jpeg';
+import logoUrl from '../../assets/logo.jpeg';
 import { SESSION_CONFIG } from '../../config/session';
 
 export const AdminLayout = () => {

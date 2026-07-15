@@ -1,0 +1,32 @@
+# Variáveis de ambiente (NUNCA envie para o GitHub)
+.env
+.env.*
+
+# Node e dependências do frontend
+frontend/node_modules/
+node_modules/
+
+# Logs e arquivos de sistema
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.DS_Store
+
+# Build files (gerados automaticamente pela Vercel)
+frontend/dist/
+frontend/dist-ssr/
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Arquivos sensíveis do projeto que não devem ir pro Git
+supabase_schema.sql
+definitions.md

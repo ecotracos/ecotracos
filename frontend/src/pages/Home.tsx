@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { supabase } from '../config/supabase';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, User } from 'lucide-react';
-import logoUrl from '../../assets/logo.jpeg';
+import logoUrl from '../assets/logo.jpeg';
 import { HOME_CONTENT } from '../config/content';
 
 // Subcomponente para animação de scroll

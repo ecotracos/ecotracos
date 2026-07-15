@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { supabase } from '../../config/supabase';
 import { useNavigate } from 'react-router-dom';
-import { LogIn, Mail } from 'lucide-react';
-import logoUrl from '../../../assets/logo.jpeg';
+import { LogIn } from 'lucide-react';
+import logoUrl from '../../assets/logo.jpeg';
 
 export const Login = () => {
   const [email, setEmail] = useState('');

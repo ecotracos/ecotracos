@@ -32,7 +32,7 @@ export const AdminLayout = () => {
 
   // Monitor de Inatividade (Auto-Logout)
   useEffect(() => {
-    let inactivityTimer: NodeJS.Timeout;
+    let inactivityTimer: ReturnType<typeof setTimeout>;
 
     const resetTimer = () => {
       clearTimeout(inactivityTimer);

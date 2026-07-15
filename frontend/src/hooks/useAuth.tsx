@@ -47,15 +47,25 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const fetchUserRole = async (userId: string) => {
-    try {
-      const { data, error } = await supabase.from('user_roles').select('role').eq('user_id', userId).single();
-      if (data) setRole(data.role);
-      else setRole(null);
-    } catch (err) {
-      setRole(null);
-    } finally {
-      setLoading(false);
+    let retries = 5;
+    let foundRole = null;
+    
+    while (retries > 0) {
+      try {
+        const { data, error } = await supabase.from('user_roles').select('role').eq('user_id', userId).single();
+        if (data && !error) {
+          foundRole = data.role;
+          break;
+        }
+      } catch (err) {}
+      
+      // Esperar 600ms antes da próxima tentativa para garantir que a trigger finalizou no backend
+      await new Promise(resolve => setTimeout(resolve, 600));
+      retries--;
     }
+    
+    setRole(foundRole);
+    setLoading(false);
   };
 
   return (

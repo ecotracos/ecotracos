@@ -96,8 +96,26 @@ export const GerenciarProdutos = () => {
 
   const deleteProduct = async (id: string) => {
     if(!window.confirm('Tem certeza que deseja excluir este produto?')) return;
+    
+    const productToDelete = products.find(p => p.id === id);
     const { error } = await supabase.from('products').delete().eq('id', id);
-    if (!error) setProducts(products.filter(p => p.id !== id));
+    
+    if (!error) {
+      setProducts(products.filter(p => p.id !== id));
+      
+      if (productToDelete && productToDelete.product_images) {
+        const paths = productToDelete.product_images
+          .map((img: any) => {
+            const urlParts = img.image_url.split('/product-images/');
+            return urlParts.length > 1 ? urlParts[1] : null;
+          })
+          .filter(Boolean);
+          
+        if (paths.length > 0) {
+          await supabase.storage.from('product-images').remove(paths);
+        }
+      }
+    }
   };
 
   const openModal = (product: any = null) => {

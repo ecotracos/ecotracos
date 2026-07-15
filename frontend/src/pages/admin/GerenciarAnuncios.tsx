@@ -33,11 +33,21 @@ export const GerenciarAnuncios = () => {
 
   const deleteAd = async (id: string) => {
     if(!window.confirm('Excluir este anúncio do carrossel?')) return;
+    
+    const adToDelete = ads.find(a => a.id === id);
     const { error } = await supabase.from('hero_banners').delete().eq('id', id);
+    
     if (error) {
       alert('Erro ao excluir: ' + error.message);
     } else {
       setAds(ads.filter(a => a.id !== id));
+      
+      if (adToDelete && adToDelete.image_url) {
+        const urlParts = adToDelete.image_url.split('/product-images/');
+        if (urlParts.length > 1) {
+          await supabase.storage.from('product-images').remove([urlParts[1]]);
+        }
+      }
     }
   };
   const openModal = (ad: any = null) => {

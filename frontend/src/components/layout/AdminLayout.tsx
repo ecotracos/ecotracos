@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Outlet, Navigate, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { supabase } from '../../config/supabase';
-import { LayoutDashboard, Package, Image as ImageIcon, Users, Settings, LogOut, Mail } from 'lucide-react';
+import { LayoutDashboard, Package, Image as ImageIcon, Users, Settings, LogOut, Mail, Menu, X } from 'lucide-react';
 import logoUrl from '../../assets/logo.jpeg';
 import { SESSION_CONFIG } from '../../config/session';
 
@@ -10,6 +10,7 @@ export const AdminLayout = () => {
   const { user, role, loading } = useAuth();
   const navigate = useNavigate();
   const [unreadCount, setUnreadCount] = useState(0);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     if (role === 'admin' || role === 'employee') {
@@ -89,21 +90,34 @@ export const AdminLayout = () => {
 
   return (
     <div className="min-h-screen flex bg-gray-50">
+      {/* Overlay Mobile */}
+      {isMobileMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+
       {/* Sidebar Lateral */}
-      <aside className="w-64 bg-eco-dark text-white flex flex-col hidden md:flex">
-        <div className="p-6 flex items-center gap-3 border-b border-eco-accent/20">
-          <img src={logoUrl} className="w-10 h-10 rounded-full" alt="Logo" />
-          <span className="font-bold text-lg text-eco-primary">Painel Admin</span>
+      <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-eco-dark text-white flex flex-col transform transition-transform duration-300 md:relative md:translate-x-0 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+        <div className="p-6 flex items-center justify-between border-b border-eco-accent/20">
+          <div className="flex items-center gap-3">
+            <img src={logoUrl} className="w-10 h-10 rounded-full" alt="Logo" />
+            <span className="font-bold text-lg text-eco-primary">Painel Admin</span>
+          </div>
+          <button onClick={() => setIsMobileMenuOpen(false)} className="md:hidden text-gray-400 hover:text-white">
+            <X size={24} />
+          </button>
         </div>
         
         <nav className="flex-grow p-4 space-y-2">
-          <Link to="/admin/dashboard" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-eco-accent/30 transition-colors">
+          <Link onClick={() => setIsMobileMenuOpen(false)} to="/admin/dashboard" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-eco-accent/30 transition-colors">
             <LayoutDashboard size={20} /> Visão Geral
           </Link>
-          <Link to="/admin/produtos" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-eco-accent/30 transition-colors">
+          <Link onClick={() => setIsMobileMenuOpen(false)} to="/admin/produtos" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-eco-accent/30 transition-colors">
             <Package size={20} /> Produtos
           </Link>
-          <Link to="/admin/mensagens" className="flex items-center justify-between px-4 py-3 rounded-lg hover:bg-eco-accent/30 transition-colors">
+          <Link onClick={() => setIsMobileMenuOpen(false)} to="/admin/mensagens" className="flex items-center justify-between px-4 py-3 rounded-lg hover:bg-eco-accent/30 transition-colors">
             <div className="flex items-center gap-3">
               <Mail size={20} /> Caixa de Entrada
             </div>
@@ -113,25 +127,25 @@ export const AdminLayout = () => {
               </span>
             )}
           </Link>
-          <Link to="/admin/anuncios" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-eco-accent/30 transition-colors">
+          <Link onClick={() => setIsMobileMenuOpen(false)} to="/admin/anuncios" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-eco-accent/30 transition-colors">
             <ImageIcon size={20} /> Anúncios
           </Link>
-          <Link to="/admin/faq" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-eco-accent/30 transition-colors">
+          <Link onClick={() => setIsMobileMenuOpen(false)} to="/admin/faq" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-eco-accent/30 transition-colors">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg> FAQ
           </Link>
           
           {role === 'admin' && (
             <>
-              <Link to="/admin/usuarios" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-eco-accent/30 transition-colors">
+              <Link onClick={() => setIsMobileMenuOpen(false)} to="/admin/usuarios" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-eco-accent/30 transition-colors">
                 <Users size={20} /> Usuários (Admin)
               </Link>
-              <Link to="/admin/config" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-eco-accent/30 transition-colors">
+              <Link onClick={() => setIsMobileMenuOpen(false)} to="/admin/config" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-eco-accent/30 transition-colors">
                 <Settings size={20} /> Configurações
               </Link>
             </>
           )}
           
-          <Link to="/admin/perfil" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-eco-accent/30 transition-colors">
+          <Link onClick={() => setIsMobileMenuOpen(false)} to="/admin/perfil" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-eco-accent/30 transition-colors">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg> Perfil
           </Link>
         </nav>
@@ -147,9 +161,17 @@ export const AdminLayout = () => {
       </aside>
 
       {/* Conteúdo Principal */}
-      <main className="flex-1 overflow-y-auto bg-gray-100">
+      <main className="flex-1 overflow-y-auto bg-gray-100 flex flex-col min-w-0">
         {/* Header Mobile Omitido por Brevidade (Adicionaremos depois se necessário) */}
-        <div className="p-8">
+        <div className="md:hidden bg-white border-b border-gray-200 p-4 flex items-center gap-3 sticky top-0 z-30 shadow-sm">
+          <button onClick={() => setIsMobileMenuOpen(true)} className="text-gray-600 hover:text-eco-primary">
+            <Menu size={28} />
+          </button>
+          <img src={logoUrl} className="w-8 h-8 rounded-full" alt="Logo" />
+          <span className="font-bold text-lg text-eco-primary">Admin</span>
+        </div>
+
+        <div className="p-4 md:p-8 flex-grow">
           <Outlet />
         </div>
       </main>

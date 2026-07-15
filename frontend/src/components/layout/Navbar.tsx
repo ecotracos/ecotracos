@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, X, ShoppingBag } from 'lucide-react';
-import logoUrl from '../../../assets/logo.jpeg';
+import logoUrl from '../../assets/logo.jpeg';
 import { useAuth } from '../../hooks/useAuth';
 
 export const Navbar = () => {
